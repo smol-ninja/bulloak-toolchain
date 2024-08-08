@@ -1,0 +1,19 @@
+{
+    "name": "@sablier-labs/bulloak-verifier",
+    "license": "MIT",
+    "version": "0.0.1",
+    "author": {
+      "name": "Sablier Labs Ltd",
+      "url": "https://sablier.com"
+    },
+    "main": "dist/index.js",
+    "dependencies": {
+    },
+    "devDependencies": {
+      "prettier": "^3.3.2"
+    },
+    "keywords": [],
+    "scripts": {
+      "build": "bun build src/index.js -o dist --source-map && bun build src/save.js -o dist/save --source-map"
+    }
+  }
