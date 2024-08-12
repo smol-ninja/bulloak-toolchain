@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v4"
+
+      - name: "Verify the Solidity tests using Bulloak with quotes"
+        uses: "smol-ninja/bulloak-verifier@main"
+        with:
+          tree-path: "test-workspace/**.tree"
+
+      - name: "Bulloak summary"
+        run: |
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY

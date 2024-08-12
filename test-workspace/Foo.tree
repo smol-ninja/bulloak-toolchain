@@ -1,0 +1,8 @@
+FooTest_Test
+├── when a equals 0
+│   └── it should revert
+└── when a does not equal 0
+    ├── when a is odd
+    │   └── it should return 1
+    └── when a is not odd
+        └── it should return 2

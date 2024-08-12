@@ -1,0 +1,85 @@
+name: bulloak-verifier
+description: Verify that the Solidity tests match the structure of the Branching Trees.
+author: Sablier Labs Ltd
+
+branding:
+  icon: feather
+  color: green
+
+inputs:
+  cache:
+    default: "true"
+    description: Whether to cache Cargo build.
+    required: false
+  cache-key:
+    default: "${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}"
+    description: A custom key to identify the cache.
+    required: false
+  cache-restore-keys:
+    default: "${{ runner.os }}-cargo-"
+    description: A custom key to identify the cache to restore.
+    required: false
+  save-always:
+    default: "true"
+    description: Save the cache even if a prior step fails.
+    required: false
+  skip-modifiers:
+    default: "false"
+    description: Whether to ignore modifiers declaration in the Solidity test contracts.
+    required: false
+  tree-path:
+    description: The path to the BTT tree files.
+    required: true
+
+outputs:
+  bulloak-version:
+    description: Version as reported by `bulloak --version`.
+    value: "${{steps.version.outputs.bulloak-version}}"
+
+runs:
+  using: composite
+  steps:
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+
+    - name: Setup Rust Caching
+      if: ${{ inputs.cache == 'true' }}
+      id: cache-cargo
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        save-always: ${{ inputs.save-always }}
+        key: ${{ inputs.cache-key }}
+        restore-keys: ${{ inputs.cache-restore-keys }}
+
+    - name: Install bulloak or use the cached version
+      if: steps.cache-cargo.outputs.cache-hit != 'true'
+      shell: bash
+      run: cargo install bulloak
+
+    - id: version
+      name: Print installed version
+      shell: bash
+      run: |
+        echo "bulloak-version=$(bulloak --version)" >> $GITHUB_OUTPUT
+        bulloak --version
+
+    - name: Verify that the Solidity tests match the structure of the Branching Trees
+      env:
+        SKIP_MODIFIERS: ${{ inputs.skip-modifiers }}
+        TREE_PATH: ${{ inputs.tree-path }}
+      shell: bash
+      run: |
+        echo "🌳 Verifying the Solidity tests using Bulloak"
+        if [ "$SKIP_MODIFIERS" == "true" ]; then
+          bulloak check $TREE_PATH --skip-modifiers
+        else
+          bulloak check $TREE_PATH
+        fi
