@@ -1,6 +1,6 @@
-# Bulloak Verifier
+# Bulloak Toolchain
 
-This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) verifier. Special thanks to [alexfertel](https://x.com/alexfertel) for his amazing work on Bulloak.
+This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) toolchain. Special thanks to [alexfertel](https://x.com/alexfertel) for his amazing work on Bulloak.
 
 ## Example workflow
 
@@ -20,7 +20,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Verify the Solidity tests using Bulloak"
-        uses: "smol-ninja/bulloak-verifier@v1"
+        uses: "smol-ninja/bulloak-toolchain@v1"
         with:
           skip-modifiers: "false"
           tree-path: "test-workspace/**.tree"
