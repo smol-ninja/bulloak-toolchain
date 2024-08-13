@@ -1,6 +1,6 @@
 # Bulloak Toolchain
 
-This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) toolchain. Special thanks to [alexfertel](https://x.com/alexfertel) for his amazing work on Bulloak.
+This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) toolchain and check that Solidity tests conform to BTT spec. Special thanks to [alexfertel](https://x.com/alexfertel) for his amazing work on Bulloak.
 
 ## Example workflow
 
@@ -19,7 +19,7 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
 
-      - name: "Verify the Solidity tests using Bulloak"
+      - name: "Install and run Bulloak"
         uses: "smol-ninja/bulloak-toolchain@v1"
         with:
           skip-modifiers: "false"

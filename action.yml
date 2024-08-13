@@ -1,5 +1,5 @@
 name: bulloak-toolchain
-description: Verify that the Solidity tests match the structure of the Branching Trees.
+description: Install Bulloak and check that Solidity tests conform to BTT spec
 author: Sablier Labs Ltd
 
 branding:
@@ -71,13 +71,13 @@ runs:
         echo "bulloak-version=$(bulloak --version)" >> $GITHUB_OUTPUT
         bulloak --version
 
-    - name: Verify that the Solidity tests match the structure of the Branching Trees
+    - name: Check that the Solidity tests conform to BTT spec
       env:
         SKIP_MODIFIERS: ${{ inputs.skip-modifiers }}
         TREE_PATH: ${{ inputs.tree-path }}
       shell: bash
       run: |
-        echo "🌳 Verifying the Solidity tests using Bulloak"
+        echo "🌳 Checking the Solidity tests using Bulloak"
         if [ "$SKIP_MODIFIERS" == "true" ]; then
           bulloak check $TREE_PATH --skip-modifiers
         else
