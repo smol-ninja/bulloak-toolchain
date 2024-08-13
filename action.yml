@@ -1,4 +1,4 @@
-name: bulloak-verifier
+name: bulloak-toolchain
 description: Verify that the Solidity tests match the structure of the Branching Trees.
 author: Sablier Labs Ltd
 
