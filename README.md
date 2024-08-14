@@ -1,6 +1,6 @@
 # Bulloak Toolchain
 
-This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) toolchain and check that Solidity tests conform to BTT spec. Special thanks to [alexfertel](https://x.com/alexfertel) for his amazing work on Bulloak.
+This GitHub Action installs the [Bulloak](https://github.com/alexfertel/bulloak) toolchain and check that Solidity tests conform to BTT spec.
 
 ## Example workflow
 
@@ -42,6 +42,12 @@ jobs:
 | Name              | Description                                |
 | ----------------- | ------------------------------------------ |
 | `bulloak-version` | Version as reported by `bulloak --version` |
+
+## Contributors
+
+- [PaulRBerg](https://github.com/paulRBerg) - For the initial idea and motivation.
+- [alexfertel](https://github.com/alexfertel) - For his amazing work on Bulloak.
+- [andreivladbrg](https://github.com/andreivladbrg) - For feedback on the implementation of BTT.
 
 ## License
 
