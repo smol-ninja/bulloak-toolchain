@@ -79,7 +79,7 @@ runs:
       run: |
         echo "🌳 Checking the Solidity tests using Bulloak"
         if [ "$SKIP_MODIFIERS" == "true" ]; then
-          bulloak check $TREE_PATH --skip-modifiers
+          bulloak check "${{ TREE_PATH }}" --skip-modifiers
         else
-          bulloak check $TREE_PATH
+          bulloak check "${{ TREE_PATH }}"
         fi

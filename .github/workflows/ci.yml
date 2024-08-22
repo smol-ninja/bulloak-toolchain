@@ -18,6 +18,11 @@ jobs:
         with:
           tree-path: "test-workspace/**.tree"
 
+      - name: "Install and run Bulloak"
+        uses: "smol-ninja/bulloak-toolchain@main"
+        with:
+          tree-path: test-workspace/**.tree
+
       - name: "Bulloak summary"
         run: |
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
