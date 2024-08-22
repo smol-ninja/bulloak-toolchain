@@ -35,7 +35,7 @@ jobs:
 | `cache-restore-keys` | A custom key to identify the cache to restore                          | "${{ runner.os }}-cargo-"                                  | No        |
 | `save-always`        | Save the cache even if a prior step fails                              | true                                                       | No        |
 | `skip-modifiers`     | Whether to ignore modifiers declaration in the Solidity test contracts | false                                                      | No        |
-| `tree-path`          | The test directory. This should be `test`.                             |                                                            | Yes       |
+| `tree-path`          | The test directory which would usually be `test`                       |                                                            | Yes       |
 
 ## Outputs
 
