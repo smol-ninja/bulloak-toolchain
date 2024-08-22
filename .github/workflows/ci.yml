@@ -13,10 +13,15 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
 
-      - name: "Install and run Bulloak"
-        uses: "smol-ninja/bulloak-toolchain@main"
+      - name: "Install and run Bulloak on path with double quotes"
+        uses: "smol-ninja/bulloak-toolchain@staging"
         with:
           tree-path: "test-workspace/**.tree"
+
+      - name: "Install and run Bulloak on path without double quotes"
+        uses: "smol-ninja/bulloak-toolchain@staging"
+        with:
+          tree-path: test-workspace/**.tree
 
       - name: "Bulloak summary"
         run: |
