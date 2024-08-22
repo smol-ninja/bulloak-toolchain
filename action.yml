@@ -28,7 +28,7 @@ inputs:
     description: "Whether to ignore modifiers declaration in the Solidity test contracts"
     required: false
   tree-path:
-    description: "The path to the BTT tree files"
+    description: "The test directory"
     required: true
 
 outputs:
@@ -74,12 +74,12 @@ runs:
     - name: "Check that the Solidity tests conform to BTT spec"
       env:
         SKIP_MODIFIERS: ${{ inputs.skip-modifiers }}
-        TREE_PATH: ${{ inputs.tree-path }}
+        TEST_DIR: ${{ inputs.tree-path }}
       shell: bash
       run: |
         echo "🌳 Checking the Solidity tests using Bulloak"
         if [ "$SKIP_MODIFIERS" == "true" ]; then
-          bulloak check $TREE_PATH --skip-modifiers
+          find $TEST_DIR -name "*.tree" -print0 | xargs -0 -I {} sh -c 'bulloak check "{}" --skip-modifiers'
         else
-          bulloak check $TREE_PATH
+          find $TEST_DIR -name "*.tree" -print0 | xargs -0 -I {} sh -c 'bulloak check "{}"'
         fi

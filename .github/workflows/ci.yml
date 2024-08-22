@@ -14,9 +14,9 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Install and run Bulloak"
-        uses: "smol-ninja/bulloak-toolchain@main"
+        uses: "smol-ninja/bulloak-toolchain@staging"
         with:
-          tree-path: "test-workspace/**.tree"
+          tree-path: test-workspace
 
       - name: "Bulloak summary"
         run: |
