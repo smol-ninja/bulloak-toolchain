@@ -16,7 +16,7 @@ jobs:
       - name: "Install and run Bulloak"
         uses: "smol-ninja/bulloak-toolchain@staging"
         with:
-          tree-path: test-workspace
+          test-dir: test-workspace
 
       - name: "Bulloak summary"
         run: |
