@@ -1,6 +1,6 @@
 name: "bulloak-toolchain"
 description: "Install Bulloak and check that Solidity tests conform to BTT spec"
-author: "Sablier Labs Ltd"
+author: "Subham Yadav"
 
 branding:
   icon: "feather"
@@ -15,11 +15,7 @@ inputs:
     default: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     description: "A custom key to identify the cache"
     required: false
-  cache-restore-keys:
-    default: ${{ runner.os }}-cargo-
-    description: "A custom key to identify the cache to restore"
-    required: false
-  save-always:
+  cache-on-failure:
     default: "true"
     description: "Save the cache even if a prior step fails"
     required: false
@@ -40,29 +36,17 @@ runs:
   using: "composite"
   steps:
     - name: "Install Rust"
-      uses: actions-rs/toolchain@v1
+      uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
+        cache: ${{ inputs.cache }}
+        cache-key: ${{ inputs.cache-key }}
+        cache-on-failure: ${{ inputs.cache-on-failure }}
+        rustflags: ""
         toolchain: stable
 
-    - id: "cache-cargo"
-      name: "Setup Rust Caching"
-      if: ${{ inputs.cache == 'true' }}
-      uses: actions/cache@v4
-      with:
-        key: ${{ inputs.cache-key }}
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        restore-keys: ${{ inputs.cache-restore-keys }}
-        save-always: ${{ inputs.save-always }}
-
-    - name: "Install bulloak or use the cached version"
-      if: steps.cache-cargo.outputs.cache-hit != 'true'
+    - name: "Install bulloak"
       shell: bash
-      run: cargo install bulloak
+      run: cargo install bulloak --quiet
 
     - id: "version"
       name: "Print installed version"
