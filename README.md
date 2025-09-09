@@ -31,7 +31,7 @@ jobs:
 
 | Name             | Description                                                            | Default | Required? |
 | ---------------- | ---------------------------------------------------------------------- | ------- | --------- |
-| `cache`          | Automatically configure Rust cache                                     | true    | No        |
+| `cache`          | Whether to cache Cargo build                                           | true    | No        |
 | `skip-modifiers` | Whether to ignore modifiers declaration in the Solidity test contracts | false   | No        |
 | `test-dir`       | The test directory which would usually be `test`                       |         | Yes       |
 
