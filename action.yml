@@ -11,14 +11,6 @@ inputs:
     default: "true"
     description: "Whether to cache Cargo build"
     required: false
-  cache-key:
-    default: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    description: "A custom key to identify the cache"
-    required: false
-  cache-on-failure:
-    default: "true"
-    description: "Save the cache even if a prior step fails"
-    required: false
   skip-modifiers:
     default: "false"
     description: "Whether to ignore modifiers declaration in the Solidity test contracts"
@@ -38,13 +30,20 @@ runs:
     - name: "Install Rust"
       uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        cache: ${{ inputs.cache }}
-        cache-key: ${{ inputs.cache-key }}
-        cache-on-failure: ${{ inputs.cache-on-failure }}
-        rustflags: ""
+        cache: false # Caching separately in the next step
         toolchain: stable
 
+    - id: cache-cargo
+      name: "Cache Cargo lockfile"
+      if: ${{ inputs.cache == 'true' }}
+      uses: actions/cache@v4
+      with:
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        path: ~/.cargo/bin/bulloak
+        restore-keys: ${{ runner.os }}-cargo-
+
     - name: "Install bulloak"
+      if: steps.cache-cargo.outputs.cache-hit != 'true'
       shell: bash
       run: cargo install bulloak --quiet
 
