@@ -29,13 +29,11 @@ jobs:
 
 ## Inputs
 
-| Name               | Description                                                            | Default                                                    | Required? |
-| ------------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------- | --------- |
-| `cache`            | Automatically configure Rust cache                                     | true                                                       | No        |
-| `cache-key`        | A custom key to identify the cache                                     | "${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}" | No        |
-| `cache-on-failure` | Save the cache even if a prior step fails                              | true                                                       | No        |
-| `skip-modifiers`   | Whether to ignore modifiers declaration in the Solidity test contracts | false                                                      | No        |
-| `test-dir`         | The test directory which would usually be `test`                       |                                                            | Yes       |
+| Name             | Description                                                            | Default | Required? |
+| ---------------- | ---------------------------------------------------------------------- | ------- | --------- |
+| `cache`          | Automatically configure Rust cache                                     | true    | No        |
+| `skip-modifiers` | Whether to ignore modifiers declaration in the Solidity test contracts | false   | No        |
+| `test-dir`       | The test directory which would usually be `test`                       |         | Yes       |
 
 ## Outputs
 
