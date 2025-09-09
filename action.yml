@@ -1,6 +1,6 @@
 name: "bulloak-toolchain"
 description: "Install Bulloak and check that Solidity tests conform to BTT spec"
-author: "Subham Yadav"
+author: "Shubham Yadav"
 
 branding:
   icon: "feather"
