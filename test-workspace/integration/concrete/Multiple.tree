@@ -1,0 +1,17 @@
+Foo1_Test::testA
+├── when a equals 0
+│   └── it should revert
+└── when a does not equal 0
+    ├── when a is odd
+    │   └── it should return 1
+    └── when a is not odd
+        └── it should return 2
+
+Foo1_Test::testB
+├── when a equals 0
+│   └── it should revert
+└── when a does not equal 0
+    ├── when a is odd
+    │   └── it should return 1
+    └── when a is not odd
+        └── it should return 2

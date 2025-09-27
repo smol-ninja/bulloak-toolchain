@@ -9,15 +9,19 @@ on:
 
 jobs:
   test-action:
+    strategy:
+      matrix:
+        version: [0.8.1, 0.9.0, latest]
     runs-on: ubuntu-latest
     steps:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
 
       - name: "Install and run Bulloak"
-        uses: "smol-ninja/bulloak-toolchain@main"
+        uses: "./"
         with:
           test-dir: test-workspace
+          version: ${{ matrix.version }}
 
       - name: "Bulloak summary"
         run: |

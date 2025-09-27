@@ -1,4 +1,4 @@
-FooTest_Test
+Foo_Test
 ├── when a equals 0
 │   └── it should revert
 └── when a does not equal 0

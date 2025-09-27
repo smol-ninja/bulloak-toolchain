@@ -18,6 +18,10 @@ inputs:
   test-dir:
     description: "The test directory"
     required: true
+  version:
+    default: "latest"
+    description: "The version of Bulloak to install"
+    required: false
 
 outputs:
   bulloak-version:
@@ -38,14 +42,19 @@ runs:
       if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-cargo-${{ inputs.version }}-${{ hashFiles('**/Cargo.lock') }}
         path: ~/.cargo/bin/bulloak
-        restore-keys: ${{ runner.os }}-cargo-
+        restore-keys: ${{ runner.os }}-cargo-${{ inputs.version }}-
 
     - name: "Install bulloak"
       if: steps.cache-cargo.outputs.cache-hit != 'true'
       shell: bash
-      run: cargo install bulloak --quiet
+      run: |
+        if [ "${{ inputs.version }}" == "latest" ]; then
+          cargo install bulloak --quiet
+        else
+          cargo install bulloak --version ${{ inputs.version }} --quiet
+        fi
 
     - id: "version"
       name: "Print installed version"
