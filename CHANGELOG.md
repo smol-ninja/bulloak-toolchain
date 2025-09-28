@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. The format 
 
 [v1.0.2]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v1.0.2
 [v2.0.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.0.0
-[v2.2.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.2.0
+[v2.1.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.1.0
 
 ## [v2.1.0] - 2025-09-28
 
