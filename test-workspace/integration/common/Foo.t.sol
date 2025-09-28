@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.0;
 
-contract FooTest_Test {
+contract Foo_Test {
     function test_RevertWhen_AEquals0() external {
         // it should revert
     }

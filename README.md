@@ -34,6 +34,7 @@ jobs:
 | `cache`          | Whether to cache Cargo build                                           | true    | No        |
 | `skip-modifiers` | Whether to ignore modifiers declaration in the Solidity test contracts | false   | No        |
 | `test-dir`       | The test directory which would usually be `test`                       |         | Yes       |
+| `version`        | The version of Bulloak to install                                      | latest  | No        |
 
 ## Outputs
 
