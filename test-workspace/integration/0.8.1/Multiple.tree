@@ -1,4 +1,4 @@
-Foo1_Test::testA
+Foo_Test::testA
 ├── when a equals 0
 │   └── it should revert
 └── when a does not equal 0
@@ -7,7 +7,7 @@ Foo1_Test::testA
     └── when a is not odd
         └── it should return 2
 
-Foo1_Test::testB
+Foo_Test::testB
 ├── when a equals 0
 │   └── it should revert
 └── when a does not equal 0
