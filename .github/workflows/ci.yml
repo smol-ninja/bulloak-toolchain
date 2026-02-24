@@ -39,6 +39,38 @@ jobs:
         run: |
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
+  test-nested-cargo-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v4"
+
+      - name: "Create nested Cargo.lock"
+        run: |
+          mkdir -p node_modules/.pnpm/some-package/node_modules/dep
+          echo '[package]' > node_modules/.pnpm/some-package/node_modules/dep/Cargo.lock
+
+      - name: "Install and run Bulloak"
+        id: bulloak
+        uses: "./"
+        with:
+          test-dir: "test-workspace/integration/common"
+          version: "latest"
+
+      - name: "Verify resolved version"
+        env:
+          VERSION: ${{ steps.bulloak.outputs.bulloak-version }}
+        run: |
+          echo "Reported version: $VERSION"
+          if echo "$VERSION" | grep -qi "latest"; then
+            echo "::error::Version should be resolved, not 'latest'"
+            exit 1
+          fi
+          if ! echo "$VERSION" | grep -qE '[0-9]+\.[0-9]+\.[0-9]+'; then
+            echo "::error::Version '$VERSION' is not valid semver"
+            exit 1
+          fi
+
   revert-if-test-dir-is-missing:
     runs-on: ubuntu-latest
     steps:
