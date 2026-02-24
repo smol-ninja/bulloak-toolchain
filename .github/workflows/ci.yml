@@ -11,15 +11,19 @@ jobs:
   test-action:
     strategy:
       matrix:
-        version: [0.8.1, 0.9.0, latest]
+        version: [0.8.1, 0.9.0, 0.9.1, 0.9.2, latest]
         test-dir: [test-workspace/integration/common]
         include:
           - version: 0.8.1
             test-dir: test-workspace/integration/0.8.1
           - version: 0.9.0
             test-dir: test-workspace/integration/0.9.0
+          - version: 0.9.1
+            test-dir: test-workspace/integration/0.9.1
+          - version: 0.9.2
+            test-dir: test-workspace/integration/0.9.2
           - version: latest
-            test-dir: test-workspace/integration/0.9.0
+            test-dir: test-workspace/integration/0.9.2
     runs-on: ubuntu-latest
     steps:
       - name: "Check out the repo"
@@ -34,3 +38,23 @@ jobs:
       - name: "Bulloak summary"
         run: |
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
+
+  test-required-input:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v4"
+
+      - name: "Run action without test-dir"
+        id: no-test-dir
+        uses: "./"
+        with:
+          version: "latest"
+        continue-on-error: true
+
+      - name: "Verify it failed"
+        run: |
+          if [ "${{ steps.no-test-dir.outcome }}" != "failure" ]; then
+            echo "::error::Expected failure when required input test-dir is missing"
+            exit 1
+          fi
