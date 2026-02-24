@@ -31,30 +31,56 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: "Validate inputs"
+      shell: bash
+      env:
+        TEST_DIR: ${{ inputs.test-dir }}
+        VERSION: ${{ inputs.version }}
+      run: |
+        if [ -z "$TEST_DIR" ]; then
+          echo "::error::Required input 'test-dir' is missing"
+          exit 1
+        fi
+
     - name: "Install Rust"
       uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         cache: false # Caching separately in the next step
         toolchain: stable
 
+    - id: resolve-version
+      name: "Resolve version"
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        if [ "$VERSION" == "latest" ]; then
+          RESOLVED=$(cargo search bulloak --limit 1 2>/dev/null | head -1 | awk -F'"' '{print $2}')
+          echo "version=$RESOLVED" >> $GITHUB_OUTPUT
+        else
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        fi
+
     - id: cache-cargo
-      name: "Cache Cargo lockfile"
+      name: "Cache bulloak binary"
       if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
-        key: ${{ runner.os }}-cargo-${{ inputs.version }}-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-bulloak-${{ steps.resolve-version.outputs.version }}
         path: ~/.cargo/bin/bulloak
-        restore-keys: ${{ runner.os }}-cargo-${{ inputs.version }}-
+
+    - name: "Install cargo-binstall"
+      if: steps.cache-cargo.outputs.cache-hit != 'true'
+      uses: cargo-bins/cargo-binstall@main
 
     - name: "Install bulloak"
       if: steps.cache-cargo.outputs.cache-hit != 'true'
       shell: bash
+      env:
+        VERSION: ${{ steps.resolve-version.outputs.version }}
+        DOCS_RS: "1"
       run: |
-        if [ "${{ inputs.version }}" == "latest" ]; then
-          cargo install bulloak --quiet
-        else
-          cargo install bulloak --version ${{ inputs.version }} --quiet
-        fi
+        cargo binstall bulloak --version "$VERSION" --no-confirm --log-level info
 
     - id: "version"
       name: "Print installed version"
