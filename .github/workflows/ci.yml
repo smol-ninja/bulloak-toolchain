@@ -45,6 +45,9 @@ jobs:
       - name: "Check out the repo"
         uses: "actions/checkout@v4"
 
+      - name: "Remove .tree files"
+        run: find . -name "*.tree" -delete
+
       - name: "Run action without test-dir"
         id: no-test-dir
         uses: "./"
