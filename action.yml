@@ -42,6 +42,19 @@ runs:
           exit 1
         fi
 
+    - id: resolve-version
+      name: "Resolve version"
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        if [ "$VERSION" == "latest" ]; then
+          RESOLVED=$(curl -s https://crates.io/api/v1/crates/bulloak | jq -r '.crate.max_version')
+          echo "version=$RESOLVED" >> $GITHUB_OUTPUT
+        else
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        fi
+
     - name: "Install Rust"
       uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
@@ -49,13 +62,12 @@ runs:
         toolchain: stable
 
     - id: cache-cargo
-      name: "Cache Cargo lockfile"
+      name: "Cache bulloak binary"
       if: ${{ inputs.cache == 'true' }}
       uses: actions/cache@v4
       with:
-        key: ${{ runner.os }}-cargo-${{ inputs.version }}-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-bulloak-${{ steps.resolve-version.outputs.version }}
         path: ~/.cargo/bin/bulloak
-        restore-keys: ${{ runner.os }}-cargo-${{ inputs.version }}-
 
     - name: "Install cargo-binstall"
       if: steps.cache-cargo.outputs.cache-hit != 'true'
@@ -65,14 +77,10 @@ runs:
       if: steps.cache-cargo.outputs.cache-hit != 'true'
       shell: bash
       env:
-        VERSION: ${{ inputs.version }}
+        VERSION: ${{ steps.resolve-version.outputs.version }}
         DOCS_RS: "1"
       run: |
-        if [ "$VERSION" == "latest" ]; then
-          cargo binstall bulloak --no-confirm --log-level info
-        else
-          cargo binstall bulloak --version "$VERSION" --no-confirm --log-level info
-        fi
+        cargo binstall bulloak --version "$VERSION" --no-confirm --log-level info
 
     - id: "version"
       name: "Print installed version"
