@@ -42,6 +42,12 @@ runs:
           exit 1
         fi
 
+    - name: "Install Rust"
+      uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        cache: false # Caching separately in the next step
+        toolchain: stable
+
     - id: resolve-version
       name: "Resolve version"
       shell: bash
@@ -49,17 +55,11 @@ runs:
         VERSION: ${{ inputs.version }}
       run: |
         if [ "$VERSION" == "latest" ]; then
-          RESOLVED=$(curl -s https://crates.io/api/v1/crates/bulloak | jq -r '.crate.max_version')
+          RESOLVED=$(cargo search bulloak --limit 1 2>/dev/null | head -1 | awk -F'"' '{print $2}')
           echo "version=$RESOLVED" >> $GITHUB_OUTPUT
         else
           echo "version=$VERSION" >> $GITHUB_OUTPUT
         fi
-
-    - name: "Install Rust"
-      uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        cache: false # Caching separately in the next step
-        toolchain: stable
 
     - id: cache-cargo
       name: "Cache bulloak binary"
