@@ -6,6 +6,18 @@ All notable changes to this project will be documented in this file. The format 
 [v1.0.2]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v1.0.2
 [v2.0.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.0.0
 [v2.1.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.1.0
+[v2.2.0]: https://github.com/smol-ninja/bulloak-toolchain/releases/tag/v2.2.0
+
+## [v2.2.0] - 2026-02-24
+
+### Changed
+
+- Use pre-compiled binaries via `cargo-binstall` instead of building from source
+- Use bulloak version as the cache key
+
+### Fixed
+
+- Validate that required input `test-dir` is not missing
 
 ## [v2.1.0] - 2025-09-28
 
