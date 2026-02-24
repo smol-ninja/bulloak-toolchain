@@ -56,8 +56,10 @@ jobs:
         continue-on-error: true
 
       - name: "Verify it failed"
+        env:
+          OUTCOME: ${{ steps.no-test-dir.outcome }}
         run: |
-          if [ "${{ steps.no-test-dir.outcome }}" != "failure" ]; then
+          if [ "$OUTCOME" != "failure" ]; then
             echo "::error::Expected failure when required input test-dir is missing"
             exit 1
           fi

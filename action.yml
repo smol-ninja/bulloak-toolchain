@@ -46,14 +46,21 @@ runs:
         path: ~/.cargo/bin/bulloak
         restore-keys: ${{ runner.os }}-cargo-${{ inputs.version }}-
 
+    - name: "Install cargo-binstall"
+      if: steps.cache-cargo.outputs.cache-hit != 'true'
+      uses: cargo-bins/cargo-binstall@main
+
     - name: "Install bulloak"
       if: steps.cache-cargo.outputs.cache-hit != 'true'
       shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+        DOCS_RS: "1"
       run: |
-        if [ "${{ inputs.version }}" == "latest" ]; then
-          cargo install bulloak --quiet
+        if [ "$VERSION" == "latest" ]; then
+          cargo binstall bulloak --no-confirm --log-level info
         else
-          cargo install bulloak --version ${{ inputs.version }} --quiet
+          cargo binstall bulloak --version "$VERSION" --no-confirm --log-level info
         fi
 
     - id: "version"
