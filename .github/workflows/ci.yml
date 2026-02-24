@@ -39,7 +39,7 @@ jobs:
         run: |
           echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
 
-  test-required-input:
+  revert-if-test-dir-is-missing:
     runs-on: ubuntu-latest
     steps:
       - name: "Check out the repo"
