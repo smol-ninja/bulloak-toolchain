@@ -31,6 +31,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: "Validate inputs"
+      shell: bash
+      env:
+        TEST_DIR: ${{ inputs.test-dir }}
+        VERSION: ${{ inputs.version }}
+      run: |
+        if [ -z "$TEST_DIR" ]; then
+          echo "::error::Required input 'test-dir' is missing"
+          exit 1
+        fi
+
     - name: "Install Rust"
       uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
